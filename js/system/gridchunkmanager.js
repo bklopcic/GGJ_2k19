@@ -147,8 +147,7 @@ class GridChunkManager
                 actor.die();
                 if (actor.chunkable)
                 {
-                    const actorIdx = this.getParentChunkIdx(actor);
-                    this.chunks[actorIdx.y][actorIdx.x].addActor(actor);
+                    this.writeActorToData(actor.dataLiteral);
                 }
             }
         }
@@ -179,6 +178,12 @@ class GridChunkManager
         const x = Math.floor(obj.x / this.chunkWidth);
         const y = Math.floor(obj.y / this.chunkHeight);
         return new StageCoord(x, y);
+    }
+
+    writeActorToData(actorData)
+    {
+        const actorIdx = this.getParentChunkIdx(actorData);
+        this.chunks[actorIdx.y][actorIdx.x].addActorData(actorData);
     }
 
     generateData()
@@ -218,7 +223,7 @@ class GridChunkManager
         data.chunkWidth = this.chunkWidth;
         data.chunkHeight = this.chunkHeight;
         data.numChunksX = this.numChunksX;
-        data.numChunksY = this.numChunksX;
+        data.numChunksY = this.numChunksY;
         data.tilesPerChunkX = this.tilesPerChunkX;
         data.tilesPerChunkY = this.tilesPerChunkY;
         data.tileWidth = this.tileManager.tileWidth;
@@ -233,6 +238,55 @@ class GridChunkManager
             }
         }
         data.chunks = chunksCopy;
+        return data;
+    }
+
+    //generates a complete set of stage data from a single chunk at the specified index
+    generateDataFromChunk(coord)
+    {
+        if (!this.checkIdxExists(coord))
+        {
+            throw "Index does not exist";
+        }
+        let chunk =  this.chunks[coord.y][coord.x].clone();  
+
+        //get the data from actors that are on the cuhnk
+        const actors = this.spawner.allActors;
+        for (let i = 0; i < actors.length; i++)
+        {
+            const actor = actors[i];
+            if (actor.active && actor.chunkable)
+            {
+                const actorIdx = this.getParentChunkIdx(actor);
+                if (actorIdx.compareCoord(coord))
+                {
+                    chunk.addActor(actor);
+                }
+            }
+        }
+
+        
+        chunk = chunk.dataLiteral;
+
+        const data = {};
+        data.chunkWidth = this.chunkWidth;
+        data.chunkHeight = this.chunkHeight;
+        data.numChunksX = 1;
+        data.numChunksY = 1;
+        data.tilesPerChunkX = this.tilesPerChunkX;
+        data.tilesPerChunkY = this.tilesPerChunkY;
+        data.tileWidth = this.tileManager.tileWidth;
+        data.tileHeight = this.tileManager.tileHeight;
+        data.tileSet = this.tileManager.tileKeys;
+        data.activeRange = {
+            startIdx: {
+                x: 0, y: 0
+            },
+            endIdx: {
+                x: 1, y: 1
+            }
+        }
+        data.chunks = [[chunk]]; //chunks grid with single chunk in it
         return data;
     }
 

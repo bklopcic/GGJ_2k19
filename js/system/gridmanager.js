@@ -50,7 +50,6 @@ class GridManager
         //quick and dirty memory management
         //potential issue: no guaruntee both maps with be the same size...
         const length = this.maps.length;
-        console.log(this.maps);
         for (let i = 0; i < length; i++)
         {
             if (this.maps[i].x == x && this.maps[i].y == y)
@@ -65,7 +64,6 @@ class GridManager
         const layer = map.createStaticLayer(0, tiles, x, y);
         this.container.add(layer);
         this.maps.push({map: map, x: x, y: y});
-        console.log(this.maps.length);
     }
 
     /**

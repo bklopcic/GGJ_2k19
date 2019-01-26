@@ -32,6 +32,11 @@ class GridChunk
         this.actors.push(actor.dataLiteral);
     }
 
+    addActorData(data)
+    {
+        this.actors.push(data);
+    }
+
     clone()
     {
         const actorArrCopy = [];
