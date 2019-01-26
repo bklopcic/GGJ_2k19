@@ -15,17 +15,12 @@ class PlayerController
         this.maxHp = this.actor.maxHp;
         
         this.actor.overridden = true;
-        
-        this.buildings = ['wall', 'turret', 'targetingturret'];
-        this.selectedBuilding = 0;
 
-        this.controlKeys = 
-        {
-            Q: this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q),
-            W: this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W),
-            E: this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E),
-            R: this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R)
-        };
+        this.shiftKey = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT);
+
+        this.standMode = false;
+
+        this.targetAngle = null;
 
         this.scene.input.on('pointerdown', this.handleClick, this);
         this.scene.input.on('pointermove', this.handleMouseMove, this);
@@ -46,27 +41,14 @@ class PlayerController
 
         //this.actor.updatePosition();
         this.targeter.updatePosition(new Phaser.Geom.Point(this.actor.x, this.actor.y));
-        this.actor.sprite.setFrame(this.faceFrames[this.actor.faceDirection]);
         
-
-        if(Phaser.Input.Keyboard.JustDown(this.controlKeys.E))
+        if (this.shiftKey.isDown)
         {
-            this.build();
+            this.standMode = true;
         }
-        if(Phaser.Input.Keyboard.JustDown(this.controlKeys.R))
+        else
         {
-            this.attack();
-        }
-        if(Phaser.Input.Keyboard.JustDown(this.controlKeys.W))
-        {
-            // this.selectedBuilding++;
-            // this.selectedBuilding = this.selectedBuilding % this.buildings.length;
-            console.log(this.actor.stage.dataGrid);
-        }
-        else if (Phaser.Input.Keyboard.JustDown(this.controlKeys.Q))
-        {
-            this.selectedBuilding--;
-            this.selectedBuilding = (this.selectedBuilding + this.buildings.length) % this.buildings.length;
+            this.standMode = false;
         }
     }
 
@@ -76,30 +58,31 @@ class PlayerController
         const mouseY = this.actor.scene.cameras.main.scrollY + pointer.y;
         if (pointer.leftButtonDown())
         {
-            this.moveTo(mouseX, mouseY);
+            if (this.standMode)
+            {
+                this.fire(mouseX, mouseY);
+            }
+            else
+            {
+                this.moveTo(mouseX, mouseY);
+            }
         }
         else if (pointer.rightButtonDown())
         {
-            const stage = this.actor.stage;
-            this.targeter.setTarget(new Phaser.Geom.Point(mouseX, mouseY));
-            let coord = stage.getCoordByPixels(mouseX, mouseY);
-            const mod = Direction.modifyer[this.targeter.getDirectionToTarget()];
-            console.log(mod);
-            mod.x *= -1;
-            mod.y *= -1;
-            let direction = Direction.modifyerToDirection(mod);
-            let target = stage.getTileAt(coord.getNeighbor(direction));
-            this.moveTo(target.x + stage.data.tileWidth/2, target.y + stage.data.tileHeight/2);
+            //build
         }
-        
     }
 
     handleMouseMove(pointer)
     {
-        const mouseX = this.actor.scene.cameras.main.scrollX + pointer.x;
-        const mouseY = this.actor.scene.cameras.main.scrollY + pointer.y;
-        this.targeter.setTarget(new Phaser.Geom.Point(mouseX, mouseY));
-        this.actor.faceDirection = this.targeter.getDirectionToTarget();
+        if (this.standMode)
+        {
+            const mouseX = this.actor.scene.cameras.main.scrollX + pointer.x;
+            const mouseY = this.actor.scene.cameras.main.scrollY + pointer.y;
+            this.targeter.setTarget(new Phaser.Geom.Point(mouseX, mouseY));
+            this.actor.faceDirection = this.targeter.getDirectionToTarget();
+            this.actor.sprite.setFrame(this.faceFrames[this.actor.faceDirection]);
+        }
     }
 
     moveTo(x, y)
@@ -131,5 +114,24 @@ class PlayerController
         let y = targetTile.y + stage.data.tileHeight/2;
         const attack = stage.spawn.spawnActor("playerattack", x, y, this.actor.faceDirection, this.actor.teamTag);
         attack.attackDamage = this.actor.attackDamage;
+    }
+
+    fire(x, y)
+    {
+        this.targetAngle = Phaser.Math.Angle.Between(this.actor.x, this.actor.y, x, y);
+        this.spawnLaser();
+        this.actor.scene.time.addEvent({ delay: 200, callback: this.spawnLaser, callbackScope: this, repeat: 2 });
+    }
+    
+    spawnLaser()
+    {
+        const stage = this.actor.stage;
+        const laser = stage.spawnActor("playerattack", this.actor.x, this.actor.y, Direction.WEST, this.actor.team);
+        laser.chunkable = false;
+        const targetDistance = 200;
+        const targetX = this.actor.x + targetDistance * Math.cos(this.targetAngle);
+        const targetY = this.actor.y + targetDistance * Math.sin(this.targetAngle);
+        this.actor.scene.physics.moveToObject(laser, new Phaser.Geom.Point(targetX, targetY), 100);
+        laser.setAngle(UtilFunctions.radiansToDegrees(this.targetAngle)+90);
     }
 }
