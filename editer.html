@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Archimedes Engine Level Editor</title>
+
+        <link rel="stylesheet" type="text/css" href="editer/css/editerstyle.css">
+
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <script type="text/javascript" src="js/domevents/playevents.js"></script>
+        
+        <script type="text/javascript" src="js/utility/phaser.min.js"></script>
+        <script type="text/javascript" src="js/utility/globaldictionaries.js"></script>
+        <script type="text/javascript" src="js/utility/utilfunctions.js"></script>
+        <script type="text/javascript" src="js/utility/easystar.js"></script>
+        <script type="text/javascript" src="js/actors/actor_tools/targetingsystem.js"></script>
+        <script type="text/javascript" src="js/actors/actor_tools/actoruitheme.js"></script>
+        <script type="text/javascript" src="js/actors/actor_tools/actorgui.js"></script>
+        <script type="text/javascript" src="js/actors/actor_tools/inventory.js"></script>
+        <script type="text/javascript" src="js/actors/actor_tools/pathfinder.js"></script>
+        <script type="text/javascript" src="js/actors/actor_tools/pointdirectionmover.js"></script>
+        <script type="text/javascript" src="js/actors/actor_tools/pathmover.js"></script>
+        <script type="text/javascript" src="js/actors/actor_tools/messager.js"></script>
+        <script type="text/javascript" src="js/actors/actor.js"></script>
+        <script type="text/javascript" src="js/actors/actor_types/wall.js"></script>
+        <script type="text/javascript" src="js/actors/actor_types/unbreakablewall.js"></script>
+        <script type="text/javascript" src="js/actors/actor_types/turret.js"></script>
+        <script type="text/javascript" src="js/actors/actor_types/targetingturret.js"></script>
+        <script type="text/javascript" src="js/actors/actor_types/gatlingturret.js"></script>
+        <script type="text/javascript" src="js/actors/actor_types/player.js"></script>
+        <script type="text/javascript" src="js/actors/actor_types/bullet.js"></script>
+        <script type="text/javascript" src="js/actors/actor_types/playerattack.js"></script>
+        <script type="text/javascript" src="js/actors/actor_types/pickupitem.js"></script>
+        <script type="text/javascript" src="js/actors/actor_types/testdot.js"></script>
+        <script type="text/javascript" src="js/actors/actor_types/eraser.js"></script>
+        <script type="text/javascript" src="js/actors/actor_types/professor.js"></script>
+        <script type="text/javascript" src="js/actors/actor_types/resources.js"></script>
+        <script type="text/javascript" src="js/actors/actor_types/ghost.js"></script>
+        <script type="text/javascript" src="js/system/coordinate.js"></script>
+        <script type="text/javascript" src="js/system/stagegrid.js"></script>
+        <script type="text/javascript" src="js/system/stage.js"></script>
+        <script type="text/javascript" src="js/system/gridchunk.js"></script>
+        <script type="text/javascript" src="js/system/gridchunkmanager.js"></script>
+        <script type="text/javascript" src="js/system/chunkingcotroller.js"></script>
+        <script type="text/javascript" src="js/system/actormanager.js"></script>
+        <script type="text/javascript" src="js/system/gridmanager.js"></script>
+        <script type="text/javascript" src="js/system/playercontroller.js"></script>
+        <script type="text/javascript" src="js/ui/hud.js"></script>
+        <script type="text/javascript" src="js/scenes/bootscene.js"></script>
+        <script type="text/javascript" src="editer/js/chunkediterscene.js"></script>
+        <script type="text/javascript" src="editer/js/editerevents.js"></script>
+        <script type="text/javascript" src="editer/js/editercallbacks.js"></script>
+        <script type="text/javascript" src="editer/js/chunkeditermain.js"></script>
+
+    </head>
+    <body>
+        <div id="control-panel">
+            Mode:
+            <select id="mode-select">
+                <option value="place">Place</option>
+                <option value="erase">Erase</option>
+                <option value="select">Select</option>
+            </select><br>
+            Snap to grid: <input type="checkbox" id="snap-to-grid-check"><br><br>
+
+            <div id="actor-info">
+                Actor info: <br>
+                Type: 
+                <select id="type-select">
+                    <!--Dynamic content goes here-->
+                </select><br>
+                Direction: 
+                <select id="direction-select">
+                    <option value="1">West</option>
+                    <option value="2">Northwest</option>
+                    <option value="3">North</option>
+                    <option value="4">Northeast</option>
+                    <option value="5">East</option>
+                    <option value="6">Southeast</option>
+                    <option value="7">South</option>
+                    <option value="8">Southwest</option>
+                </select><br>
+                Team:
+                <select id="team-select">
+                    <option value="player">Player</option>
+                    <option value="enemy">Enemy</option>
+                    <option value="neutral">Neutral</option>
+                </select><br>
+            </div><br><br>
+
+            <div>
+                <input id="get-data-btn" type="button" value="Get Data"><br>
+                Data:<br>
+                <textarea id="data-display" rows="4" cols="30"></textarea><br>
+                <input type="button" id="copy-data-btn" value="Copy to Clipboard"><input id="load-data-btn" type="button" value="Load"><input id="clear-data-btn" type="button" value="Clear">
+            </div><br><br>
+            Edit tile mode: <input id="edit-tile-mode-btn" type="checkbox"><br>
+            <img id="tile-select" src="assets/img/tilemap.png"><br><br>
+            <input id="create-new-btn" type="button" value="New">
+        </div>
+        <div id="game-container"></div>
+        <div id="new-stage-form-container">
+            <div id="new-stage-form">
+                <h3>Stage configuration:</h3>
+                Horizontal chunks: <input id="num-chunks-x" type="text" size="4"><br>
+                Vertical chunks: <input id="num-chunks-y" type="text" size="4"><br>
+                Chunk width: <input id="chunk-width" type="text" size="4"><br>
+                Chunk Height: <input id="chunk-height" type="text" size="4"><br>
+                Horizontal tiles per chunk: <input id="tiles-per-chunk-x" type="text" size="4"><br>
+                Vertical tiles per chunk: <input id="tiles-per-chunk-y" type="text" size="4"><br>
+                Tile width: <input id="tile-width" type="text" size="4"><br>
+                Tile height: <input id="tile-height" type="text" size="4"><br><br>
+                <input id="submit-new-stage-config" type="button" value="Create Stage">
+            </div>
+        </div>
+    </body>
+</html>

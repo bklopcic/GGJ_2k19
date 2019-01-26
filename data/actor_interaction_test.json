@@ -1,0 +1,26 @@
+{
+	"chunkWidth": 1000,
+	"chunkHeight": 800,
+	"numChunksX": 1,
+	"numChunksY": 1,
+	"tileWidth": 100,
+	"tileHeight": 80,
+	"tilesPerChunkX": 10,
+	"tilesPerChunkY": 10,
+	"activeRange": {
+		"startIdx": {
+			"x": 0,
+			"y": 0
+		},
+		"endIdx": {
+			"x": 1,
+			"y": 1
+		}
+	},
+	"tileSet": ["tile0", "tile1"],
+	"chunks": [
+        [
+			{"actors":[{"type":"ghost","x":247,"y":200,"faceDirection":1,"team":"enemy"},{"type":"unbreakablewall","x":450,"y":200,"faceDirection":1,"team":"neutral"},{"type":"unbreakablewall","x":450,"y":280,"faceDirection":1,"team":"neutral"},{"type":"unbreakablewall","x":550,"y":280,"faceDirection":1,"team":"neutral"},{"type":"treeresource","x":150,"y":200,"faceDirection":1,"team":"neutral"},{"type":"treeresource","x":150,"y":360,"faceDirection":1,"team":"neutral"},{"type":"treeresource","x":150,"y":520,"faceDirection":1,"team":"neutral"},{"type":"stoneresource","x":250,"y":440,"faceDirection":1,"team":"neutral"},{"type":"stoneresource","x":250,"y":600,"faceDirection":1,"team":"neutral"},{"type":"stoneresource","x":450,"y":440,"faceDirection":1,"team":"neutral"},{"type":"stoneresource","x":450,"y":600,"faceDirection":1,"team":"neutral"},{"type":"stoneresource","x":650,"y":440,"faceDirection":1,"team":"neutral"},{"type":"stoneresource","x":650,"y":600,"faceDirection":1,"team":"neutral"},{"type":"stone","x":794,"y":617,"faceDirection":1,"team":"neutral"},{"type":"stone","x":909,"y":620,"faceDirection":1,"team":"neutral"},{"type":"stone","x":853,"y":673,"faceDirection":1,"team":"neutral"},{"type":"stone","x":905,"y":730,"faceDirection":1,"team":"neutral"},{"type":"log","x":859,"y":619,"faceDirection":1,"team":"neutral"},{"type":"log","x":798,"y":684,"faceDirection":1,"team":"neutral"},{"type":"log","x":913,"y":681,"faceDirection":1,"team":"neutral"},{"type":"log","x":850,"y":733,"faceDirection":1,"team":"neutral"},{"type":"stone","x":801,"y":732,"faceDirection":1,"team":"neutral"}],"tiles":[[0,1,0,1,0,1,0,1,0,1],[1,0,1,0,1,0,1,0,1,0],[0,1,0,1,0,1,0,1,0,1],[1,0,1,0,1,0,1,0,1,0],[0,1,0,1,0,1,0,1,0,1],[1,0,1,0,1,0,1,0,1,0],[0,1,0,1,0,1,0,1,0,1],[1,0,1,0,1,0,1,0,1,0],[0,1,0,1,0,1,0,1,0,1],[1,0,1,0,1,0,1,0,1,0]]}
+		]
+    ]
+}
