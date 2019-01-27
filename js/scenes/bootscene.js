@@ -22,6 +22,8 @@ class BootScene extends Phaser.Scene
         this.load.image('bullet', 'assets/img/bullet.png');
         this.load.image('laser', 'assets/img/laser.png');
         this.load.image('move-target', 'assets/img/movetarget.png');
+        this.load.image('interaction-panel', 'assets/img/interactionpanel.png');
+        this.load.image('cube', 'assets/img/cube.png');
         this.load.image('blank', 'assets/img/empty.png');
         this.load.image('rockpile', 'assets/img/stone_pile.png');
         this.load.image('tree', 'assets/img/tree.png');

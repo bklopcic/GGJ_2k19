@@ -20,6 +20,7 @@ class PlayerController
         this.standMode = false;
         this.targetAngle = null;
         this.targetActor = null;
+        this.targetBuildSite = null;
 
         this.scene.input.on('pointerdown', this.handleClick, this);
         this.scene.input.on('pointermove', this.handleMouseMove, this);
@@ -42,6 +43,7 @@ class PlayerController
             this.mover.cancelPath();
             this.actor.body.setVelocity(0, 0);
             this.actor.sprite.setFrame(this.actor.faceFrames[this.actor.faceDirection]);
+            this.destroyBuildSite();
         }
         else
         {
@@ -60,6 +62,7 @@ class PlayerController
 
     handleClick(pointer)
     {
+        this.destroyBuildSite();
         const mouseX = this.actor.scene.cameras.main.scrollX + pointer.x;
         const mouseY = this.actor.scene.cameras.main.scrollY + pointer.y;
         if (pointer.leftButtonDown())
@@ -94,7 +97,7 @@ class PlayerController
         }
         else if (pointer.rightButtonDown())
         {
-            //build
+            this.makeBuildMenu(mouseX, mouseY);
         }
     }
 
@@ -177,5 +180,35 @@ class PlayerController
             this.fire(this.selectedActor.x, this.selectedActor.y);        
         }
         this.selectedActor = null;
+    }
+
+    makeBuildMenu(x, y)
+    {
+        const target = UtilFunctions.getPointAtDistanceOnAngleToTarget({x:x,y:y}, this.actor, this.actor.range/2);
+        this.targetBuildSite = this.actor.stage.spawnActor("interactionpanel", target.x, target.y, Direction.WEST, this.actor.teamTag);
+        const cube = this.targetBuildSite.addDiegetic(x, y, "cube");
+        cube.setScale(.3, .3);
+        cube.setAlpha(.8);
+        this.actor.scene.tweens.add({
+            targets: cube,
+            alpha: .4,
+            duration: 2000,
+            yoyo: true,
+            repeat: -1
+        });
+        this.targetBuildSite.addOption("log", function(){
+            this.actor.stage.spawnActor("turret", x, y, this.actor.faceDirection, this.actor.teamTag);
+            this.destroyBuildSite();
+        }, this);
+        this.moveTo(target.x, target.y);
+    }
+
+    destroyBuildSite()
+    {
+        if (this.targetBuildSite != null)
+        {
+            this.targetBuildSite.die();
+            this.targetBuildSite = null;
+        }
     }
 }

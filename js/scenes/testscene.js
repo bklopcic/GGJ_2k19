@@ -10,7 +10,7 @@ class TestScene extends Phaser.Scene
                 default: 'arcade',
                 arcade: 
                 {
-                    debug: false
+                    debug: true
         }}});
 
         this.player;

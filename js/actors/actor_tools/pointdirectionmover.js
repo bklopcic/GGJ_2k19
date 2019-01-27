@@ -22,7 +22,7 @@ class PointDirectionMover
 
     moveToNeighborOf(x, y)
     {
-        const target = UtilFunctions.getPointAtDistanceOnAngleToTarget({x:x,y:y}, this.actor, this.actor.range)
+        const target = UtilFunctions.getPointAtDistanceOnAngleToTarget({x:x,y:y}, this.actor, this.actor.range);
         this.moveTo(target.x, target.y);
     }
 
