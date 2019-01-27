@@ -36,6 +36,7 @@ class BootScene extends Phaser.Scene
         this.load.spritesheet('gear-crossbow', 'assets/img/gear_crossbow_spritesheet.png', {frameWidth: 100, frameHeight: 100, frameCount:64});
         this.load.spritesheet('gatling-crossbow', 'assets/img/gatling_crossbow_spritesheet.png', {frameWidth: 120, frameHeight: 117, frameCount:64});
         this.load.spritesheet('blue-dude', 'assets/img/blue_dude_spritesheet.png', {frameWidth: 170, frameHeight: 180, frameCount:210});
+        this.load.spritesheet('space-dude', 'assets/img/sprite_sheet_reference.png', {frameWidth: 64, frameHeight: 64, frameCount: 36});
     }
 
     create()

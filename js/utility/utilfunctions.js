@@ -57,5 +57,22 @@ const UtilFunctions =
             }
         }
        return clearings;
+    },
+
+    getDirectionToObject: function(base, target)
+    {
+        let angle = Phaser.Math.Angle.BetweenPoints(base, target);
+        angle = (UtilFunctions.radiansToDegrees(angle) + 202.5)%360;
+        const direction = Math.abs(Math.ceil(angle/45)); //transform radian angle to direction
+        return direction;
+    },
+
+    get4WayDirectionToObject: function(base, target)
+    {
+        let angle = Phaser.Math.Angle.BetweenPoints(base, target);
+        angle = (UtilFunctions.radiansToDegrees(angle) + 202.5)%360;
+        let direction = Math.abs(Math.ceil(angle/90)); //transform radian angle to direction
+        direction += direction - 1;
+        return direction;
     }
 }

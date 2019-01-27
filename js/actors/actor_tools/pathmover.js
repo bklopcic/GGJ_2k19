@@ -62,4 +62,10 @@ class PathMover
             this.target = null;
         }
     }
+
+    cancelPath()
+    {
+        this.target = null;
+        this.mover.cancelPath();
+    }
 }

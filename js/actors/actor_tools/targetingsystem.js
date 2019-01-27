@@ -180,6 +180,7 @@ class TargetingSystem
         let angle = Phaser.Math.Angle.BetweenPoints(this.position, this.target);
         angle = (UtilFunctions.radiansToDegrees(angle) + 202.5)%360;
         const direction = Math.abs(Math.ceil(angle/45)); //transform radian angle to direction
-        return direction;
+        //return direction;
+        return UtilFunctions.getDirectionToObject(this.position, this.target);
     }
 }
