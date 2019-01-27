@@ -203,7 +203,7 @@ class PlayerController
         cube.setAlpha(.8);
         this.actor.scene.tweens.add({
             targets: cube,
-            alpha: .4,
+            alpha: .2,
             duration: 2000,
             yoyo: true,
             repeat: -1

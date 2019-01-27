@@ -52,6 +52,7 @@ class GridChunkManager
 
         if (this.activeChunkRange.startIdx.compareCoord(startIdx) && this.activeChunkRange.endIdx.compareCoord(endIdx))
         {
+            console.log("Same chunk range specified. Skipping");
             return;
         }
         
@@ -68,6 +69,16 @@ class GridChunkManager
         {
             this.debugDraw();
         }
+    }
+
+    reload()
+    {
+        const currentRange = {
+            startIdx: new StageCoord(this.activeChunkRange.startIdx.x, this.activeChunkRange.startIdx.y),
+            endIdx: new StageCoord(this.activeChunkRange.endIdx.x, this.activeChunkRange.endIdx.y)
+        }
+        this.setActiveRange(new StageCoord(0,0), new StageCoord(0,0), true);
+        this.setActiveRange(currentRange.startIdx, currentRange.endIdx);
     }
 
     loadChunk(coord)
@@ -147,7 +158,6 @@ class GridChunkManager
                 actor.die();
                 if (actor.chunkable)
                 {
-                    console.log(actor);
                     this.writeActorToData(actor.dataLiteral);
                 }
             }

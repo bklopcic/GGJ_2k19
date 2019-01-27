@@ -20,7 +20,7 @@ class TestScene extends Phaser.Scene
 
     preload()
     {
-        this.load.json('data','data/empty-medium.json');
+        this.load.json('data','data/tile_data_plants.json');
     }
     
     create()
@@ -37,10 +37,10 @@ class TestScene extends Phaser.Scene
         this.chunkController.triggerPaddingX = 800;
         this.chunkController.triggerPaddingY = 600;
 
-        const scraper = new ChunkScraper(this.stage.chunker);
-        const clearings = scraper.getClearingsInChunk(new StageCoord(3,3), 10, 10);
-        const a = {type:"nate", x: clearings[0][5].x, y: clearings[0][5].y, faceDirection: 1};
-        this.stage.chunker.writeActorToData(a);
+        // const scraper = new ChunkScraper(this.stage.chunker);
+        // const clearings = scraper.getClearingsInChunk(new StageCoord(3,3), 10, 10);
+        // const a = {type:"nate", x: clearings[0][5].x, y: clearings[0][5].y, faceDirection: 1};
+        // this.stage.chunker.writeActorToData(a);
         
         this.cameras.main.setBounds(0, 0, data.chunkWidth * data.numChunksX, data.chunkHeight * data.numChunksY);
         this.physics.world.setBounds(this.cameras.main.x, this.cameras.main.y, data.chunkWidth * data.numChunksX, data.chunkHeight * data.numChunksY);

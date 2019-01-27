@@ -59,10 +59,11 @@ ACTOR_TYPES.interactionpanel = class extends Actor
         this.hideElements();
     }
 
-    addDiegetic(x, y, key)
+    addDiegetic(x, y, key, hides)
     {
         const sprite = this.scene.add.sprite(0, 0, key);
         this.add(sprite);
+        sprite.hides = typeof hides == "undefined" ? false : hides;
         sprite.x = x - this.x;
         sprite.y = y - this.y;
         this.diegetics.push(sprite);
@@ -78,6 +79,14 @@ ACTOR_TYPES.interactionpanel = class extends Actor
         {
             o.setAlpha(0);
         }
+        for (let a of this.diegetics)
+        {
+            if (a.hides)
+            {
+                a.setAlpha(0);
+            }
+        }
+        
     }
 
     showElements()
@@ -86,6 +95,13 @@ ACTOR_TYPES.interactionpanel = class extends Actor
         for (let o of this.options)
         {
             o.setAlpha(.9);
+        }
+        for (let a of this.diegetics)
+        {
+            if (a.hides)
+            {
+                a.setAlpha(1);
+            }
         }
     }
 

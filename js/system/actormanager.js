@@ -128,6 +128,7 @@ class ActorManager
     */
     instantiateActor(actorType, x, y, faceDirection, num)
     {
+        console.log(actorType);
         num = num || 1;
         for (let i = 0; i < num; i++)
         {

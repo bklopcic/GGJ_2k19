@@ -54,3 +54,53 @@ ACTOR_TYPES.stone = class extends PickupItem
         this.pickupType = "stone";
     }
 }
+
+ACTOR_TYPES.metal = class extends PickupItem
+{
+    constructor(stage, x, y, faceDirection)
+    {
+        super(stage, x, y, "metal", faceDirection);
+        this.ACTOR_TYPE = "metal";
+        this.pickupType = "metal";
+    }
+}
+
+ACTOR_TYPES.silicon = class extends PickupItem
+{
+    constructor(stage, x, y, faceDirection)
+    {
+        super(stage, x, y, "silicon", faceDirection);
+        this.ACTOR_TYPE = "silicon";
+        this.pickupType = "silicon";
+    }
+}
+
+ACTOR_TYPES.polymer = class extends PickupItem
+{
+    constructor(stage, x, y, faceDirection)
+    {
+        super(stage, x, y, "polymer", faceDirection);
+        this.ACTOR_TYPE = "polymer";
+        this.pickupType = "polymer";
+    }
+}
+
+ACTOR_TYPES.carbon = class extends PickupItem
+{
+    constructor(stage, x, y, faceDirection)
+    {
+        super(stage, x, y, "carbon", faceDirection);
+        this.ACTOR_TYPE = "carbon";
+        this.pickupType = "carbon";
+    }
+}
+
+ACTOR_TYPES.aether = class extends PickupItem
+{
+    constructor(stage, x, y, faceDirection)
+    {
+        super(stage, x, y, "aether", faceDirection);
+        this.ACTOR_TYPE = "aether";
+        this.pickupType = "aether";
+    }
+}

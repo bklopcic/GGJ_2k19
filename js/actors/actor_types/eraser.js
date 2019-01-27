@@ -5,7 +5,9 @@ ACTOR_TYPES.eraser = class extends Actor
         super(stage, x, y, "", Direction.WEST);
         this.sprite.destroy();
 
+        this.ACTOR_TYPE = "eraser";
         this.collidable = true;
+        this.chunkable = false;
         this.setAsObstacle(false);
 
         this.body.setSize(this.stage.data.tileWidth, this.stage.data.tileHeight);
@@ -36,5 +38,6 @@ ACTOR_TYPES.eraser = class extends Actor
     {
         super.reset(x, y);
         this.ticks = 0;
+        this.chunkable = false;
     }
 }

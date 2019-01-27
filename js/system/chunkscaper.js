@@ -70,7 +70,7 @@ class ChunkScraper
         const positions = [];
         for (let a of data.chunks[0][0].actors)
         {
-            positions.push(gridSim.getCoordByPixels(a.x, a.y));
+            positions.push(simGrid.getCoordByPixels(a.x, a.y));
         }
         simGrid.recordPositions(positions);
         return simGrid;
