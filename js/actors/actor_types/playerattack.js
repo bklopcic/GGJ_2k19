@@ -20,20 +20,17 @@ ACTOR_TYPES.playerattack = class extends Actor
 
     enemyCollision(other)
     {
-        if (other.ACTOR_TYPE === "resource")
-        {
-            other.takeHit(this.attackDamage * 10);
-        }
-        else
-        {
-            other.takeHit(this.attackDamage);
-        }
+        other.takeHit(this.attackDamage);
+    }
+
+    postCollision()
+    {
+        this.attackDamage = 0;
     }
 
     reset(x, y, faceDirection, teamTag)
     {
         super.reset(x, y, faceDirection, teamTag);
-        
         this.setScale(.2, .2);
         this.setAlpha(1);
         this.scene.tweens.add({

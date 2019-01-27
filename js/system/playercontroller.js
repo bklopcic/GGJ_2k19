@@ -17,6 +17,7 @@ class PlayerController
 
         this.shiftKey = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT);
 
+        this.canFire = true;
         this.standMode = false;
         this.targetAngle = null;
         this.targetActor = null;
@@ -39,11 +40,14 @@ class PlayerController
         
         if (this.shiftKey.isDown)
         {
+            if (!this.standMode)
+            {
+                this.destroyBuildSite();
+            }
             this.standMode = true;
             this.mover.cancelPath();
             this.actor.body.setVelocity(0, 0);
             this.actor.sprite.setFrame(this.actor.faceFrames[this.actor.faceDirection]);
-            this.destroyBuildSite();
         }
         else
         {
@@ -97,7 +101,16 @@ class PlayerController
         }
         else if (pointer.rightButtonDown())
         {
-            this.makeBuildMenu(mouseX, mouseY);
+            if (this.standMode)
+            {
+                const location = UtilFunctions.getPointAtDistanceOnAngleToTarget(this.actor, {x: mouseX, y: mouseY}, this.actor.range/2);
+                this.makeBuildMenu(location.x, location.y);
+            }
+            else
+            {
+                const target = this.makeBuildMenu(mouseX, mouseY);
+                this.moveTo(target.x, target.y);
+            }
         }
     }
 
@@ -121,24 +134,21 @@ class PlayerController
         this.actor.stage.spawnActor("movetarget", target.x, target.y, this.actor.teamTag);
     }
 
-    build()
-    {
-        const stage = this.actor.stage;
-        let targetCoord = stage.getCoordByPixels(this.actor.x, this.actor.y).getNeighbor(this.actor.faceDirection);
-        if (stage.checkIfEmpty(targetCoord))
-        {
-            const targetTile = stage.getTileAt(targetCoord);
-            let x = targetTile.x + stage.data.tileWidth/2;
-            let y = targetTile.y + stage.data.tileHeight/2;
-            stage.spawn.spawnActor(this.buildings[this.selectedBuilding], x, y, this.actor.faceDirection, this.actor.teamTag);
-        }
-    }
-
     fire(x, y)
     {
+        if (!this.canFire)
+        {
+            return;
+        }
         this.targetAngle = Phaser.Math.Angle.Between(this.actor.x, this.actor.y, x, y);
-        this.spawnLaser();
+        const repeat = 2;
+        const delay = 200;
         this.actor.scene.time.addEvent({ delay: 200, callback: this.spawnLaser, callbackScope: this, repeat: 2 });
+        this.spawnLaser(x, y);
+        this.actor.scene.time.addEvent({ delay: ((repeat+1) * delay) + 1200, callback: function(){
+            this.canFire = true;
+        }, callbackScope: this});
+        this.canFire = false;
     }
     
     spawnLaser()
@@ -153,11 +163,13 @@ class PlayerController
         }
         const laser = stage.spawnActor("playerattack", spawnX, spawnY, Direction.WEST, this.actor.teamTag);
         laser.chunkable = false;
+        laser.attackDamage = this.actor.attackDamage;
         const targetDistance = 200;
         const targetX = this.actor.x + targetDistance * Math.cos(this.targetAngle);
         const targetY = this.actor.y + targetDistance * Math.sin(this.targetAngle);
         this.actor.scene.physics.moveToObject(laser, new Phaser.Geom.Point(targetX, targetY), 100);
         laser.setAngle(UtilFunctions.radiansToDegrees(this.targetAngle)+90);
+        return laser;
     }
 
     checkActorClick(x, y)
@@ -200,7 +212,7 @@ class PlayerController
             this.actor.stage.spawnActor("turret", x, y, this.actor.faceDirection, this.actor.teamTag);
             this.destroyBuildSite();
         }, this);
-        this.moveTo(target.x, target.y);
+        return target;
     }
 
     destroyBuildSite()

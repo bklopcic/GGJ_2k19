@@ -23,7 +23,7 @@ ACTOR_TYPES.player = class extends Actor
             
         this.maxHp = 10;
         this.hp = this.maxHp;
-        this.attackDamage = .5;
+        this.attackDamage = 1;
         this.range = 140;
 
         //NOTE: the .4 is to account for the scale resizing. This should be eliminated when a regular texture is implemented for this actor

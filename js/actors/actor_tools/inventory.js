@@ -21,6 +21,7 @@ class Inventory
         {
             this.items[itemName] = quantity;
         }
+        console.log(this.items);
     }
 
     getItemQuantity(itemName)

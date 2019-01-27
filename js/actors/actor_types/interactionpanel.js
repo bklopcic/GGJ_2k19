@@ -56,6 +56,7 @@ ACTOR_TYPES.interactionpanel = class extends Actor
             e.stopPropagation();
             callback.call(context)
         });
+        this.hideElements();
     }
 
     addDiegetic(x, y, key)
@@ -66,6 +67,7 @@ ACTOR_TYPES.interactionpanel = class extends Actor
         sprite.y = y - this.y;
         this.diegetics.push(sprite);
         this.sendToBack(sprite);
+        this.hideElements();
         return sprite;
     }
 
@@ -87,9 +89,9 @@ ACTOR_TYPES.interactionpanel = class extends Actor
         }
     }
 
-    reset(x, y, faceDirection)
+    reset(x, y, faceDirection, teamTag)
     {
-        super.reset(x, y, faceDirection);
+        super.reset(x, y, faceDirection, teamTag);
 
         for (let d of this.diegetics)
         {
@@ -101,5 +103,7 @@ ACTOR_TYPES.interactionpanel = class extends Actor
         }
         this.diegetics = [];
         this.options = [];
+
+        this.hideElements();
     }
 }
