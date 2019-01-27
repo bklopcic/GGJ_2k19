@@ -44,6 +44,8 @@ class Actor extends Phaser.GameObjects.Container
         //this property will be rest back to true when an actor is reset. If an actor subclass
         //is to always be non-chunkable, the reset method must be overridden
         this.chunkable = true;
+
+        this.interactable = false;
         
         this.teamTag = "-1";
         //whether this actor can be targeted by other actors

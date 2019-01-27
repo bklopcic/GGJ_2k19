@@ -6,6 +6,7 @@ class resource extends Actor
 
         this.collidable = true;
         this.targetable = false;
+        this.interactable = true;
         this.setAsObstacle(true);
         
         this.maxHp = 14;

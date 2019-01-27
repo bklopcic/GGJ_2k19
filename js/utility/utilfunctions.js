@@ -74,5 +74,18 @@ const UtilFunctions =
         let direction = Math.abs(Math.ceil(angle/90)); //transform radian angle to direction
         direction += direction - 1;
         return direction;
+    },
+
+    /**
+     * @param {obj} base obj to measure from
+     * @param {obj} target object to find angle to
+     * @param {number} distance distance along path to target to get point at
+     */
+    getPointAtDistanceOnAngleToTarget: function(base, target, distance)
+    {
+        const angle = Phaser.Math.Angle.Between(base.x, base.y, target.x, target.y);
+        const targetX = base.x + distance * Math.cos(angle);
+        const targetY = base.y + distance * Math.sin(angle);
+        return new Phaser.Geom.Point(targetX, targetY);
     }
 }

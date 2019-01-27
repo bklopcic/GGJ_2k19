@@ -18,8 +18,8 @@ class PlayerController
         this.shiftKey = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT);
 
         this.standMode = false;
-
         this.targetAngle = null;
+        this.targetActor = null;
 
         this.scene.input.on('pointerdown', this.handleClick, this);
         this.scene.input.on('pointermove', this.handleMouseMove, this);
@@ -51,6 +51,10 @@ class PlayerController
         if(!this.mover.pathInProgress && !this.standMode)
         {
             this.actor.sprite.setFrame(this.actor.faceFrames[this.actor.faceDirection]);
+            if (this.selectedActor != null)
+            {
+                this.arriveAtSelectedActor();
+            }
         }
     }
 
@@ -66,13 +70,31 @@ class PlayerController
             }
             else
             {
-                this.moveTo(mouseX, mouseY);
+                this.selectedActor = this.checkActorClick(mouseX, mouseY);
+                if (this.selectedActor != null)
+                {
+                    const distanceToTarget = Phaser.Math.Distance.Between(this.actor.x, this.actor.y, this.selectedActor.x, this.selectedActor.y);
+                    this.actor.faceDirection = UtilFunctions.get4WayDirectionToObject(this.actor, this.selectedActor);
+                    if (distanceToTarget <= this.actor.range)
+                    {
+                        this.arriveAtSelectedActor();
+                    }
+                    else
+                    {
+                        this.mover.moveToNeighborOf(mouseX, mouseY);
+                        this.actor.stage.spawnActor("movetarget", this.mover.target.x + this.mover.target.width/2, this.mover.target.y + this.mover.target.width/2, this.actor.teamTag);
+                        this.actor.sprite.play(this.actor.animKeys[this.actor.faceDirection]);
+                    }
+                }
+                else
+                {
+                    this.moveTo(mouseX, mouseY);
+                }
             }
         }
         else if (pointer.rightButtonDown())
         {
             //build
-            
         }
     }
 
@@ -93,6 +115,7 @@ class PlayerController
         const target = new Phaser.Geom.Point(this.mover.target.x + this.mover.target.width/2, this.mover.target.y + this.mover.target.height/2);
         this.actor.faceDirection = UtilFunctions.get4WayDirectionToObject(this.actor, target)
         this.actor.sprite.play(this.actor.animKeys[this.actor.faceDirection]);
+        this.actor.stage.spawnActor("movetarget", target.x, target.y, this.actor.teamTag);
     }
 
     build()
@@ -118,12 +141,41 @@ class PlayerController
     spawnLaser()
     {
         const stage = this.actor.stage;
-        const laser = stage.spawnActor("playerattack", this.actor.x, this.actor.y, Direction.WEST, this.actor.team);
+        const offset = 30;
+        let spawnX = this.actor.x + (Direction.modifyer[this.actor.faceDirection].x * offset);
+        let spawnY = this.actor.y + (Direction.modifyer[this.actor.faceDirection].y * offset);
+        if (this.actor.faceDirection == Direction.WEST || this.actor.faceDirection == Direction.EAST)
+        {
+            spawnY += 20;
+        }
+        const laser = stage.spawnActor("playerattack", spawnX, spawnY, Direction.WEST, this.actor.teamTag);
         laser.chunkable = false;
         const targetDistance = 200;
         const targetX = this.actor.x + targetDistance * Math.cos(this.targetAngle);
         const targetY = this.actor.y + targetDistance * Math.sin(this.targetAngle);
         this.actor.scene.physics.moveToObject(laser, new Phaser.Geom.Point(targetX, targetY), 100);
         laser.setAngle(UtilFunctions.radiansToDegrees(this.targetAngle)+90);
+    }
+
+    checkActorClick(x, y)
+    {
+        const stage = this.actor.stage;
+        for (let a of stage.allActors)
+        {
+            if (a.active && a.interactable && a.body.hitTest(x, y))
+            {
+                return a;
+            }
+        }
+        return null;
+    }
+
+    arriveAtSelectedActor()
+    {
+        if (this.selectedActor.teamTag != this.actor.teamTag)
+        {
+            this.fire(this.selectedActor.x, this.selectedActor.y);        
+        }
+        this.selectedActor = null;
     }
 }

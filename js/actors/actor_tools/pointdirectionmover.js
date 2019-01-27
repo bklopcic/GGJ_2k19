@@ -22,10 +22,8 @@ class PointDirectionMover
 
     moveToNeighborOf(x, y)
     {
-        const coord = actor.stage.getCoordByPixels(x, y);
-        const direction = UtilFunctions.getDirectionToObject({x, y}, this.actor);
-        const targetCoord = coord.getNeighbor(direction);
-        this.moveTo(actor.stage.getTileAt(targetCoord));
+        const target = UtilFunctions.getPointAtDistanceOnAngleToTarget({x:x,y:y}, this.actor, this.actor.range)
+        this.moveTo(target.x, target.y);
     }
 
     update()

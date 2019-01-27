@@ -24,10 +24,8 @@ ACTOR_TYPES.player = class extends Actor
         this.maxHp = 10;
         this.hp = this.maxHp;
         this.attackDamage = .5;
-        //dictionary used to store which items this player has (keys) and how many it has (values)
-        //if this gets too complex, or other actors need similar functionality can be refactored into an
-        //an inventory class as an actor tool
-        this.pickUpItems = {};
+        this.range = 140;
+
         //NOTE: the .4 is to account for the scale resizing. This should be eliminated when a regular texture is implemented for this actor
         this.body.setSize(this.sprite.width/4, this.sprite.height/4);
         this.body.setOffset(-22, -5);

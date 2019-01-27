@@ -147,6 +147,7 @@ class GridChunkManager
                 actor.die();
                 if (actor.chunkable)
                 {
+                    console.log(actor);
                     this.writeActorToData(actor.dataLiteral);
                 }
             }
