@@ -1,0 +1,246 @@
+{
+    "f1resource": {
+        "key":"f1", 
+        "resource": "carbon"
+    },
+
+    "f16resource": {
+        "key":"f16", 
+        "resource": "aether"
+    },
+
+   "f2resource": {
+        "key":"f2", 
+        "resource": "carbon"
+    },
+
+    "f3resource": { 
+        "key":"f3", 
+        "resource": "carbon"
+    },
+
+    "i1resource": { 
+        "key":"i1", 
+        "resource": "polymer"
+    },
+
+    "i10resource": { 
+        "key":"i10", 
+        "resource": "polymer"
+    },
+
+    "i22resource": { 
+        "key":"i22", 
+        "resource": "polymer"
+    },
+
+    "i23resource": { 
+        "key":"i23", 
+        "resource": "polymer"
+    },
+
+    "i24resource": { 
+        "key":"i24", 
+        "resource": "polymer"
+    },
+
+    "i25resource": { 
+        "key":"i25", 
+        "resource": "polymer"
+    },
+
+    "i26resource": { 
+        "key":"i26", 
+        "resource": "polymer"
+    },
+
+    "i27resource": { 
+        "key":"i27", 
+        "resource": "polymer"
+    },
+
+    "i28resource": { 
+        "key":"i28", 
+        "resource": "polymer"
+    },
+
+    "i29resource": { 
+        "key":"i29", 
+        "resource": "polymer"
+    },
+
+    "i30resource": { 
+        "key":"i30", 
+        "resource": "polymer"
+    },
+
+    "i36resource": { 
+        "key":"i36", 
+        "resource": "polymer"
+    },
+
+    "i37resource": { 
+        "key":"i37", 
+        "resource": "polymer"
+    },
+
+    "i38resource": { 
+        "key":"i38", 
+        "resource": "polymer"
+    },
+
+    "i4resource": { 
+        "key":"i4", 
+        "resource": "polymer"
+    },
+
+    "i7resource": { 
+        "key":"i7", 
+        "resource": "polymer"
+    },
+
+    "r11resource": { 
+        "key":"r11", 
+        "resource": "silicon"
+    },
+
+    "r23resource": { 
+        "key":"r23", 
+        "resource": "silicon"
+    },
+
+    "r28resource": { 
+        "key":"r28", 
+        "resource": "silicon"
+    },
+
+    "r41resource": { 
+        "key":"r41", 
+        "resource": "silicon"
+    },
+
+    "r42resource": { 
+        "key":"r42", 
+        "resource": "silicon"
+    },
+
+    "r43resource": { 
+        "key":"r43", 
+        "resource": "silicon"
+    },
+
+    "r44resource": { 
+        "key":"r44", 
+        "resource": "metal"
+    },
+
+    "r45resource": { 
+        "key":"r45", 
+        "resource": "metal"
+    },
+
+    "r46resource": { 
+        "key":"r46", 
+        "resource": "metal"
+    },
+
+    "r47resource": { 
+        "key":"r47", 
+        "resource": "metal"
+    },
+
+    "r48resource": { 
+        "key":"r48", 
+        "resource": "metal"
+    },
+
+    "r49resource": { 
+        "key":"r49", 
+        "resource": "metal"
+    },
+
+    "r5resource": { 
+        "key":"r5", 
+        "resource": "silicon"
+    },
+
+    "r51resource": { 
+        "key":"r51", 
+        "resource": "silicon"
+    },
+
+    "r52resource": { 
+        "key":"r52", 
+        "resource": "metal"
+    },
+
+    "r53resource": { 
+        "key":"r53", 
+        "resource": "silicon"
+    },
+
+    "r54resource": { 
+        "key":"r54", 
+        "resource": "silicon"
+    },
+
+    "r55resource": { 
+        "key":"r55", 
+        "resource": "metal"
+    },
+
+    "r56resource": { 
+        "key":"r56", 
+        "resource": "metal"
+    },
+
+    "r57resource": { 
+        "key":"r57", 
+        "resource": "silicon"
+    },
+
+    "r58resource": { 
+        "key":"r58", 
+        "resource": "silicon"
+    },
+
+    "r59resource": { 
+        "key":"r59", 
+        "resource": "metal"
+    },
+
+    "r6resource": { 
+        "key":"r6", 
+        "resource": "metal"
+    },
+
+    "r60resource": { 
+        "key":"r60", 
+        "resource": "metal"
+    },
+
+    "r61resource": { 
+        "key":"r61", 
+        "resource": "silicon"
+    },
+
+    "t1resource": { 
+        "key":"t1", 
+        "resource": "aether"
+    },
+
+    "t17resource": { 
+        "key":"t17", 
+        "resource": "carbon"
+    },
+
+    "t2resource": { 
+        "key":"t2", 
+        "resource": "aether"
+    },
+
+    "t3resource": { 
+        "key":"t3", 
+        "resource": "aether"
+    }
+}

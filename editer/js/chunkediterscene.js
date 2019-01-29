@@ -38,7 +38,14 @@ class ChunkEditerScene extends Phaser.Scene
 
         this.input.on("pointerdown", this.handleClick, this);
 
-        this.point = new Phaser.Geom.Point(this.data.chunkWidth/2, this.data.chunkHeight/2);
+        this.cameraSpeed = 10;
+        this.cameras.main.setBounds(0, 0, this.data.chunkWidth * this.data.numChunksX, this.data.chunkHeight * this.data.numChunksY);
+        this.borderPaddingX = this.cameras.main.width/2;
+        this.borderPaddingY = this.cameras.main.height/2;
+        this.point = new Phaser.Geom.Point(this.borderPaddingX, this.borderPaddingY);
+        this.physics.world.setBounds(this.cameras.main.x, this.cameras.main.y, this.data.chunkWidth * this.data.numChunksX, this.data.chunkHeight * this.data.numChunksY);
+        this.cameras.main.startFollow(this.point, true);
+        
         const debugContainer = this.add.container(0,0);
         this.chunkController = new ChunkingController(this.stage.chunker, this.point);
         this.stage.chunker.startDebug(debugContainer);
@@ -47,11 +54,6 @@ class ChunkEditerScene extends Phaser.Scene
         this.chunkController.startDebug(debugContainer);
         this.chunkController.triggerPaddingX = this.data.chunkWidth * .8;
         this.chunkController.triggerPaddingY = this.data.chunkHeight * .8;
-        
-        this.cameraSpeed = 10;
-        this.cameras.main.setBounds(0, 0, this.data.chunkWidth * this.data.numChunksX, this.data.chunkHeight * this.data.numChunksY);
-        this.physics.world.setBounds(this.cameras.main.x, this.cameras.main.y, this.data.chunkWidth * this.data.numChunksX, this.data.chunkHeight * this.data.numChunksY);
-        this.cameras.main.startFollow(this.point, true);
 
         this.controlKeys = 
         {
@@ -73,33 +75,33 @@ class ChunkEditerScene extends Phaser.Scene
         if(this.controlKeys.A.isDown)
         {
             this.point.x-= this.cameraSpeed;
-            if (this.point.x < this.data.chunkWidth/2)
+            if (this.point.x < this.borderPaddingX)
             {
-                this.point.x = this.data.chunkWidth/2;
+                this.point.x = this.borderPaddingX;
             }
         }
         else if(this.controlKeys.D.isDown)
         {
             this.point.x+= this.cameraSpeed;
-            if (this.point.x > this.physics.world.bounds.width - this.data.chunkWidth/2)
+            if (this.point.x > this.physics.world.bounds.width - this.borderPaddingX)
             {
-                this.point.x = this.physics.world.bounds.width - this.data.chunkWidth/2;
+                this.point.x = this.physics.world.bounds.width - this.borderPaddingX;
             }
         }
         if(this.controlKeys.W.isDown)
         {
             this.point.y-= this.cameraSpeed;
-            if (this.point.y < this.data.chunkHeight/2)
+            if (this.point.y < this.borderPaddingY)
             {
-                this.point.y = this.data.chunkHeight/2;
+                this.point.y = this.borderPaddingY;
             }
         }
         else if (this.controlKeys.S.isDown)
         {
             this.point.y+= this.cameraSpeed;
-            if (this.point.y > this.physics.world.bounds.height - this.data.chunkHeight/2)
+            if (this.point.y > this.physics.world.bounds.height - this.borderPaddingY)
             {
-                this.point.y = this.physics.world.bounds.height - this.data.chunkHeight/2;
+                this.point.y = this.physics.world.bounds.height - this.borderPaddingY;
             }
         }
     }

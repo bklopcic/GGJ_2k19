@@ -40,9 +40,9 @@ class GridChunk
     clone()
     {
         const actorArrCopy = [];
-        for (let i = 0; i < this.actors.length; i++)
+        for (let a of this.actors)
         {
-            actorArrCopy[i] = Object.assign({},this.actors[i]);
+            actorArrCopy.push(Object.assign({}, a));
         }
         const tilesCopy = [];
         for (let j = 0; j < this.tiles.length; j++)

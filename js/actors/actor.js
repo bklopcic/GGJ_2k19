@@ -8,10 +8,10 @@ class Actor extends Phaser.GameObjects.Container
 {
     /**
         @param {Stage} stage Stage that this Actor belongs to
-        @param {StageCoord} coord StageCoord of the starting position of this Actor
+        @param {number} x the horizontal pixel position of this actor
+        @param {number} y the vertical pixel position of this actor
         @param {string} key string name of image (or spritesheet) that this actor will use as its body
         @param {Direction.prop} direction Direction property representing the direction this Actor starts off facing (optional. Defaults to west)
-        @param {bool} isObstacle whether this Actor should report its position to the grid (optional, defaults to true)
     */
     constructor(stage, x, y, key, direction)
     {            
@@ -20,6 +20,7 @@ class Actor extends Phaser.GameObjects.Container
         this.add(this.sprite);
         this.stage = stage;
         this.faceDirection = direction || Direction.WEST;
+        this.config = null;
 
         this.scene.physics.add.existing(this);
         this.body.setCollideWorldBounds(true);
@@ -77,7 +78,30 @@ class Actor extends Phaser.GameObjects.Container
         data.y = this.y;
         data.faceDirection = this.faceDirection;
         data.team = this.teamTag;
+        data.config = this.config;
         return data;
+    }
+
+    get configCacheKey()
+    {
+        let key = null;
+        if (this.hasOwnProperty("ACTOR_TYPE"))
+        {
+            key = this.ACTOR_TYPE + "-config-data";
+        }
+        console.log(key);
+        return key;
+    }
+
+    get cacheData()
+    {
+        const cacheData = this.scene.cache.json.get(this.configCacheKey);
+        return cacheData;
+    }
+
+    getConfigData(configKey)
+    {
+        return this.cacheData[configKey];
     }
 
     get stagePosition()
@@ -144,6 +168,19 @@ class Actor extends Phaser.GameObjects.Container
         {
             this.gui.setTheme(this.teamTag);
         }
+    }
+
+    /**
+     * In override methods, this is where you would get the associated data and copy its
+     * fields into your actor's properties. You can also run logic here to determine the actor's state
+     * or do crazy shit, like delete the actor's sprite and replace it with a new one with a new key ;)
+     * This method is called internally from Actor.reset()
+     * 
+     * @param {string} config reference to data object containing actor-subclass specific field values. 
+     */
+    applyConfig(config)
+    {
+        this.config = config;
     }
 
     /**
@@ -233,13 +270,18 @@ class Actor extends Phaser.GameObjects.Container
     * @param {int} y position to place this actor
     * @param {Direction} faceDirection faceDirection of this actor (optional)
     */
-    reset(x, y, faceDirection)
+    reset(x, y, faceDirection, config)
     {
         this.setPosition(x, y);
         this.updatePosition();
         this.faceDirection = faceDirection || Direction.WEST;
         this.hp = this.maxHp;
         this.chunkable = true;
+        this.config = null;
+        if (typeof config != "undefined" && typeof config != null)
+        {
+            this.applyConfig(config);
+        }
         if(this.gui)
         {
             this.gui.updateHealthBar();

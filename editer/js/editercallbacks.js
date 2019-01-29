@@ -11,12 +11,12 @@ function copyText(elemId)
 
 function makeDefaultChunkData()
 {
-    return generateStageData(1, 1, 1000, 800, 10, 10, 100, 80);
+    return generateStageData(1, 1, 10, 10, 100, 80);
 }
 
-function generateStageData(numChunksX, numChunksY, chunkWidth, chunkHeight, tilesPerChunkX, tilesPerChunkY, tileWidth, tileHeight)
+function generateStageData(numChunksX, numChunksY, tilesPerChunkX, tilesPerChunkY, tileWidth, tileHeight)
 {
-    const data = {numChunksX, numChunksY, chunkWidth, chunkHeight, tilesPerChunkX, tilesPerChunkY, tileWidth, tileHeight};
+    const data = {numChunksX, numChunksY, chunkWidth: tilesPerChunkX*tileWidth, chunkHeight:tilesPerChunkY*tileHeight, tilesPerChunkX, tilesPerChunkY, tileWidth, tileHeight};
     data.activeRange = {
         startIdx: {
             x: 0,

@@ -11,7 +11,7 @@ class ActorManager
     constructor(stage, container)
     {
         this.stage = stage;
-        this.container = container || this.stage.scene.add.container(); //TODO: change this to container
+        this.container = container || this.stage.scene.add.container();
 
         this.actorGroups = {};
         this.allActors = []; //this exists for quick iteration of all actors
@@ -112,7 +112,7 @@ class ActorManager
         for (let i = 0; i < data.length; i++)
         {
             const actor = data[i];
-            this.spawnActor(actor.type, actor.x, actor.y, actor.faceDirection, actor.team);
+            this.spawnActor(actor.type, actor.x, actor.y, actor.faceDirection, actor.team, actor.config);
         }
     }
 
@@ -141,7 +141,7 @@ class ActorManager
         return this.actorGroups[actorType].getFirstDead();
     }
 
-    spawnActor(key, x, y, direction, team)
+    spawnActor(key, x, y, direction, team, config)
     {
         if (!this.actorGroups.hasOwnProperty(key))
         {
@@ -153,6 +153,10 @@ class ActorManager
             actor = this.instantiateActor(key, x, y, direction);
         }
         this.addActorToTeam(actor, team);
+        if (typeof config != null && typeof config != "undefined")
+        {
+            actor.applyConfig(config);
+        }
         actor.reset(x, y, direction);
         return actor;
     }

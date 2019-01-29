@@ -38,8 +38,6 @@ $(document).ready(function(){
         const data = generateStageData(
             Number($("#num-chunks-x").val()),
             Number($("#num-chunks-y").val()),
-            Number($("#chunk-width").val()),
-            Number($("#chunk-height").val()),
             Number($("#tiles-per-chunk-x").val()),
             Number($("#tiles-per-chunk-y").val()),
             Number($("#tile-width").val()),
