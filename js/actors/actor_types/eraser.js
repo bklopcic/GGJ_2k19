@@ -10,7 +10,8 @@ ACTOR_TYPES.eraser = class extends Actor
         this.chunkable = false;
         this.setAsObstacle(false);
 
-        this.body.setSize(this.stage.data.tileWidth, this.stage.data.tileHeight);
+        this.body.setSize(this.stage.data.tileWidth/2, this.stage.data.tileHeight/2);
+        this.body.setOffset(-this.body.width/2, -this.body.height/2);
 
         this.old = false;
     }

@@ -53,7 +53,7 @@ class ChunkeditorScene extends Phaser.Scene
             this.mouseDown = false;
         }, this);
         this.input.on("pointermove", function(p){
-            if ($("#snap-to-grid-check").prop("checked") || this.selectedTileType != null)
+            if ($("#mode-select").val() !== "place" || $("#snap-to-grid-check").prop("checked") || this.selectedTileType != null)
             {
                 this.handleClick(p);
             }
