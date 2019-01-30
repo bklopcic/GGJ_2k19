@@ -37,6 +37,7 @@ ACTOR_TYPES.resource = class extends Actor
         {
             return;
         }
+        this.config = configKey;
         this.resource = configData.resource;
         
         const spriteData = this.sprite.toJSON();

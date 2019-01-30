@@ -89,7 +89,6 @@ class Actor extends Phaser.GameObjects.Container
         {
             key = this.ACTOR_TYPE + "-config-data";
         }
-        console.log(key);
         return key;
     }
 
@@ -178,9 +177,9 @@ class Actor extends Phaser.GameObjects.Container
      * 
      * @param {string} config reference to data object containing actor-subclass specific field values. 
      */
-    applyConfig(config)
+    applyConfig(configKey)
     {
-        this.config = config;
+        this.config = configKey;
     }
 
     /**

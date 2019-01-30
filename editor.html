@@ -3,7 +3,7 @@
     <head>
         <title>Archimedes Engine Level Editor</title>
 
-        <link rel="stylesheet" type="text/css" href="editer/css/editerstyle.css">
+        <link rel="stylesheet" type="text/css" href="editor/css/editorstyle.css">
 
         <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
         <script type="text/javascript" src="js/domevents/playevents.js"></script>
@@ -48,10 +48,10 @@
         <script type="text/javascript" src="js/system/playercontroller.js"></script>
         <script type="text/javascript" src="js/ui/hud.js"></script>
         <script type="text/javascript" src="js/scenes/bootscene.js"></script>
-        <script type="text/javascript" src="editer/js/chunkediterscene.js"></script>
-        <script type="text/javascript" src="editer/js/editerevents.js"></script>
-        <script type="text/javascript" src="editer/js/editercallbacks.js"></script>
-        <script type="text/javascript" src="editer/js/chunkeditermain.js"></script>
+        <script type="text/javascript" src="editor/js/chunkeditorscene.js"></script>
+        <script type="text/javascript" src="editor/js/editorevents.js"></script>
+        <script type="text/javascript" src="editor/js/editorcallbacks.js"></script>
+        <script type="text/javascript" src="editor/js/chunkeditormain.js"></script>
 
     </head>
     <body>
@@ -87,6 +87,10 @@
                     <option value="enemy">Enemy</option>
                     <option value="neutral">Neutral</option>
                 </select><br>
+                Config:
+                <select id="config-select">
+                    <!--Dynamic content goes here-->
+                </select>
             </div><br><br>
 
             <div>

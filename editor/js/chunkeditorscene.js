@@ -1,10 +1,10 @@
-class ChunkEditerScene extends Phaser.Scene
+class ChunkeditorScene extends Phaser.Scene
 {
     constructor()
     {
         super(
         {
-            key: "chunk-editer", 
+            key: "chunk-editor", 
             physics:
             {
                 default: 'arcade',
@@ -29,14 +29,35 @@ class ChunkEditerScene extends Phaser.Scene
         }
     }
 
+    preload()
+    {
+        this.load.on('complete', function () {
+            updateConfigSelect();
+        });
+    }
+
     create()
     {
         this.stage = new Stage(this, this.data);
 
         this.disableActors();
         this.selectedTileType = null;
+        this.latestActionCoord = null;
+        this.mouseDown = false;
 
-        this.input.on("pointerdown", this.handleClick, this);
+        this.input.on("pointerdown", function(p){
+            this.mouseDown = true; 
+            this.handleClick(p);
+        }, this);
+        this.input.on("pointerup", function(){
+            this.mouseDown = false;
+        }, this);
+        this.input.on("pointermove", function(p){
+            if ($("#snap-to-grid-check").prop("checked") || this.selectedTileType != null)
+            {
+                this.handleClick(p);
+            }
+        }, this);
 
         this.cameraSpeed = 10;
         this.cameras.main.setBounds(0, 0, this.data.chunkWidth * this.data.numChunksX, this.data.chunkHeight * this.data.numChunksY);
@@ -54,6 +75,7 @@ class ChunkEditerScene extends Phaser.Scene
         this.chunkController.startDebug(debugContainer);
         this.chunkController.triggerPaddingX = this.data.chunkWidth * .8;
         this.chunkController.triggerPaddingY = this.data.chunkHeight * .8;
+
 
         this.controlKeys = 
         {
@@ -112,42 +134,48 @@ class ChunkEditerScene extends Phaser.Scene
         settings.type = $("#type-select").val();
         settings.direction = Number($("#direction-select").val());
         settings.team = $("#team-select").val();
+        settings.config = $("#config-select").val();
         return settings;
     }
 
     handleClick(pointer)
     {
-        if (this.stage.chunker.checkIdxExists(this.stage.chunker.getParentChunkIdx(pointer)))
+        if (this.mouseDown && this.stage.chunker.checkIdxExists(this.stage.chunker.getParentChunkIdx(pointer)))
         {
             const mode = $("#mode-select").val();
             const gridSnap = $("#snap-to-grid-check").prop("checked");
+            const inTileMode = this.selectedTileType != null;
             let clickX = this.cameras.main.scrollX + pointer.x;
             let clickY = this.cameras.main.scrollY + pointer.y;
-            
-            if (this.selectedTileType != null)
+            const coord = this.stage.getCoordByPixels(clickX, clickY);
+
+            if ((this.latestActionCoord != null && coord.compareCoord(this.latestActionCoord)) && (inTileMode || gridSnap))
+            {
+                return;
+            }
+            if (inTileMode)
             {
                 this.placeTile(clickX, clickY);
+                this.latestActionCoord = coord;
                 return;
             }
             if (gridSnap)
             {
-                const coord = this.stage.getCoordByPixels(clickX, clickY);
-                const tile = this.stage.getTileAt(new StageCoord(coord.x, coord.y));
+                const tile = this.stage.getTileAt(coord);
                 clickX = tile.x + this.data.tileWidth/2;
                 clickY = tile.y + this.data.tileHeight/2;
             }
-
             switch(mode)
             {
                 case "place":
                     const set = this.getDOMSettings();
-                    const actor = this.stage.spawn.spawnActor(set.type, clickX, clickY, set.direction, set.team);
+                    const actor = this.stage.spawn.spawnActor(set.type, clickX, clickY, set.direction, set.team, set.config);
                     actor.overridden = true;
+                    this.latestActionCoord = coord;
                     break;
                 case "erase":
                     this.stage.spawn.spawnActor("eraser", clickX, clickY);
-                    break;
-                default:
+                    this.latestActionCoord = coord;
                     break;
             } 
         }

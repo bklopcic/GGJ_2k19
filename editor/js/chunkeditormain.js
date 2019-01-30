@@ -4,11 +4,11 @@ const phaserConfig =
     width: 1000,
     height: 800,
     parent: "game-container",
-    scene: [BootScene, ChunkEditerScene],
+    scene: [BootScene, ChunkeditorScene],
     physics: {
         default: "arcade"
     }
 };
 
 const game = new Phaser.Game(phaserConfig);
-game.scene.start("boot", "chunk-editer");
+game.scene.start("boot", "chunk-editor");

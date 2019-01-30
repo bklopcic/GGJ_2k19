@@ -52,7 +52,7 @@ function generateStageData(numChunksX, numChunksY, tilesPerChunkX, tilesPerChunk
 function enterTileMode()
 {
     $("#edit-tile-mode-btn").prop("checked", true);
-    const scene = game.scene.getScene("chunk-editer");
+    const scene = game.scene.getScene("chunk-editor");
     scene.selectedTileType = 0;
     scene.hideActors();
 }
@@ -60,7 +60,19 @@ function enterTileMode()
 function exitTileMode()
 {
     $("#edit-tile-mode-btn").prop("checked", false);
-    const scene = game.scene.getScene("chunk-editer");
+    const scene = game.scene.getScene("chunk-editor");
     scene.selectedTileType = null;
     scene.showActors();
+}
+
+function updateConfigSelect()
+{
+    const configData = game.scene.getScene("chunk-editor").cache.json.get($("#type-select").val()+"-config-data");
+    for (const prop in configData)
+    {
+        const elem = $("<option>");
+        elem.attr("value", prop);
+        elem.html(prop);
+        $("#config-select").append(elem);
+    }
 }

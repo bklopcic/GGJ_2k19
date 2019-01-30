@@ -128,7 +128,6 @@ class ActorManager
     */
     instantiateActor(actorType, x, y, faceDirection, num)
     {
-        console.log(actorType);
         num = num || 1;
         for (let i = 0; i < num; i++)
         {
@@ -153,11 +152,7 @@ class ActorManager
             actor = this.instantiateActor(key, x, y, direction);
         }
         this.addActorToTeam(actor, team);
-        if (typeof config != null && typeof config != "undefined")
-        {
-            actor.applyConfig(config);
-        }
-        actor.reset(x, y, direction);
+        actor.reset(x, y, direction, config);
         return actor;
     }
 }
