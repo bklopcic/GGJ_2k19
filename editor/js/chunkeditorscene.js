@@ -67,15 +67,14 @@ class ChunkeditorScene extends Phaser.Scene
         this.physics.world.setBounds(this.cameras.main.x, this.cameras.main.y, this.data.chunkWidth * this.data.numChunksX, this.data.chunkHeight * this.data.numChunksY);
         this.cameras.main.startFollow(this.point, true);
         
-        const debugContainer = this.add.container(0,0);
+        this.debugContainer = this.add.container(0,0);
         this.chunkController = new ChunkingController(this.stage.chunker, this.point);
-        this.stage.chunker.startDebug(debugContainer);
         this.stage.chunker.onChunkLoadEvent = this.onChunkCallback;
         this.stage.chunker.onChunkLoadEventContext = this;
-        this.chunkController.startDebug(debugContainer);
         this.chunkController.triggerPaddingX = this.data.chunkWidth * .8;
         this.chunkController.triggerPaddingY = this.data.chunkHeight * .8;
 
+        this.stopDebug();
 
         this.controlKeys = 
         {
@@ -85,13 +84,13 @@ class ChunkeditorScene extends Phaser.Scene
             S: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S)
         };
     }
-
+    
     update()
     {
         this.moveCamera();
         this.chunkController.update();
     }
-
+    
     moveCamera()
     {
         if(this.controlKeys.A.isDown)
@@ -127,7 +126,7 @@ class ChunkeditorScene extends Phaser.Scene
             }
         }
     }
-
+    
     getDOMSettings()
     {
         const settings = {};
@@ -137,7 +136,7 @@ class ChunkeditorScene extends Phaser.Scene
         settings.config = $("#config-select").val();
         return settings;
     }
-
+    
     handleClick(pointer)
     {
         if (this.mouseDown && this.stage.chunker.checkIdxExists(this.stage.chunker.getParentChunkIdx(pointer)))
@@ -148,7 +147,7 @@ class ChunkeditorScene extends Phaser.Scene
             let clickX = this.cameras.main.scrollX + pointer.x;
             let clickY = this.cameras.main.scrollY + pointer.y;
             const coord = this.stage.getCoordByPixels(clickX, clickY);
-
+            
             if ((this.latestActionCoord != null && coord.compareCoord(this.latestActionCoord)) && (inTileMode || gridSnap))
             {
                 return;
@@ -168,19 +167,20 @@ class ChunkeditorScene extends Phaser.Scene
             switch(mode)
             {
                 case "place":
-                    const set = this.getDOMSettings();
-                    const actor = this.stage.spawn.spawnActor(set.type, clickX, clickY, set.direction, set.team, set.config);
-                    actor.overridden = true;
-                    this.latestActionCoord = coord;
-                    break;
+                const set = this.getDOMSettings();
+                const actor = this.stage.spawn.spawnActor(set.type, clickX, clickY, set.direction, set.team, set.config);
+                actor.overridden = true;
+                actor.body.debugShowBody = $("#toggle-debug-btn").prop("checked");
+                this.latestActionCoord = coord;
+                break;
                 case "erase":
-                    this.stage.spawn.spawnActor("eraser", clickX, clickY);
-                    this.latestActionCoord = coord;
-                    break;
+                this.stage.spawn.spawnActor("eraser", clickX, clickY);
+                this.latestActionCoord = coord;
+                break;
             } 
         }
     }
-
+    
     placeTile(x, y)
     {
         const chunkIdx = this.stage.chunker.getParentChunkIdx({x,y});
@@ -190,7 +190,7 @@ class ChunkeditorScene extends Phaser.Scene
         chunk.tiles[tileY][tileX] = this.selectedTileType;
         this.stage.grid.drawTiles(chunkIdx.x * this.data.chunkWidth, chunkIdx.y * this.data.chunkHeight, chunk.tiles);
     }
-
+    
     disableActors()
     {
         for (let a of this.stage.spawn.allActors)
@@ -198,7 +198,7 @@ class ChunkeditorScene extends Phaser.Scene
             a.overridden = true;
         }
     }
-
+    
     hideActors()
     {
         for (let a of this.stage.spawn.allActors)
@@ -209,7 +209,7 @@ class ChunkeditorScene extends Phaser.Scene
             }
         }
     }
-
+    
     showActors()
     {
         for (let a of this.stage.spawn.allActors)
@@ -219,6 +219,32 @@ class ChunkeditorScene extends Phaser.Scene
                 a.setVisible(true);
             }
         }
+    }
+    
+    startDebug()
+    {
+        for (let a of this.stage.allActors)
+        {
+            if (a.active)
+            {
+                a.body.debugShowBody = true;
+            }
+        }
+        this.chunkController.startDebug(this.debugContainer);
+        this.stage.chunker.startDebug(this.debugContainer);
+    }
+
+    stopDebug()
+    {
+        for (let a of this.stage.allActors)
+        {
+            if (a.active)
+            {
+                a.body.debugShowBody = false;
+            }
+        }
+        this.chunkController.stopDebug();
+        this.stage.chunker.stopDebug();
     }
 
     onChunkCallback()

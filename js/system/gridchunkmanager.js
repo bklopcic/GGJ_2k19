@@ -312,9 +312,12 @@ class GridChunkManager
 
     stopDebug()
     {
-        this.debugDrawer.clear();
-        this.debugDrawer.destroy();
-        this.debugDrawer = null;
+        if (this.debugDrawer != null)
+        {
+            this.debugDrawer.clear();
+            this.debugDrawer.destroy();
+            this.debugDrawer = null;
+        }
     }
 
     debugDraw()

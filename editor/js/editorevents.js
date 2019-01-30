@@ -16,8 +16,9 @@ $(document).ready(function(){
     });
     
     $("#load-data-btn").click(function(){
-        game.scene.start("chunk-editor", JSON.parse($("#data-display").val()));
         exitTileMode();
+        $("#toggle-debug-btn").prop("checked", false);
+        game.scene.start("chunk-editor", JSON.parse($("#data-display").val()));
     });
     
     $("#clear-data-btn").click(function(){
@@ -75,6 +76,18 @@ $(document).ready(function(){
         
         $("#type-select").on('change',function(){
             updateConfigSelect();
+        });
+
+        $("#toggle-debug-btn").click(function(){
+            const scene = game.scene.getScene("chunk-editor");
+            if ($(this).prop("checked"))
+            {
+                scene.startDebug();
+            }
+            else
+            {
+                scene.stopDebug();
+            }
         });
         
 });
